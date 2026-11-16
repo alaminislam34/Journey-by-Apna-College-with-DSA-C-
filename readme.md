@@ -12,8 +12,9 @@ A complete learning guide in **easy words**, with **easy examples** and **step-b
 8. Functions
 9. Binary Number System
 10. Arrays
-11. Linear Search
-12. Binary Search
+11. Bitwise Operators
+12. Linear Search
+13. Binary Search
 
 > 📌 **How to use this guide:** Read one topic fully, type every code example into a compiler yourself, change the numbers and see what changes. That is the fastest way to learn!
 
@@ -31,8 +32,9 @@ A complete learning guide in **easy words**, with **easy examples** and **step-b
 - [8. Functions](#8-functions)
 - [9. Binary Number System](#9-binary-number-system)
 - [10. Arrays](#10-arrays)
-- [11. Linear Search](#11-linear-search)
-- [12. Binary Search](#12-binary-search)
+- [11. Bitwise Operators](#11-bitwise-operators) 🚀 *(Dedicated Module in [`Bitwise/`](./Bitwise/README.md))*
+- [12. Linear Search](#12-linear-search)
+- [13. Binary Search](#13-binary-search)
 - [Quick Cheat Sheet](#quick-cheat-sheet)
 
 ---
@@ -597,6 +599,21 @@ Step 5:  true && true → true        → result = true
 ```
 
 > 💡 **Rule for beginners:** when in doubt, add parentheses `( )` to show your own order. It never hurts and makes code readable.
+
+### 4.7 Bitwise operators (quick overview)
+
+Bitwise operators work directly on the individual **bits** (0s and 1s) of integers:
+
+| Operator | Name | Example (`a = 5`, `b = 6`) | Result |
+|:---:|:---:|:---:|:---:|
+| `&` | **Bitwise AND** | `5 & 6` (`0101 & 0110`) | `4` (`0100`) |
+| `\|` | **Bitwise OR** | `5 \| 6` (`0101 \| 0110`) | `7` (`0111`) |
+| `^` | **Bitwise XOR** | `5 ^ 6` (`0101 ^ 0110`) | `3` (`0011`) |
+| `~` | **Bitwise NOT** | `~5` (Formula: `-(5 + 1)`) | `-6` |
+| `<<` | **Left Shift** | `5 << 1` (Multiplies by 2) | `10` |
+| `>>` | **Right Shift** | `5 >> 1` (Divides by 2) | `2` |
+
+> 📖 **Full Deep Dive:** See [Section 11: Bitwise Operators](#11-bitwise-operators) and the dedicated [`Bitwise/README.md`](./Bitwise/README.md) module for step-by-step visual calculations, 1's & 2's complement, and DSA shortcut tricks.
 
 ---
 
@@ -1790,6 +1807,92 @@ int main() {
 }
 ```
 
-(The `int *arr` part is a **pointer** — explained fully in Section 11's context. For now, just know: this syntax means "give me the array.")
+(The `int *arr` part is a **pointer** — explained fully in upcoming pointer topics. For now, just know: this syntax means "give me the array.")
 
 ---
+
+## 11. Bitwise Operators
+
+> 📂 **Dedicated Subfolder:** We have created an in-depth standalone guide and runnable code in [`Bitwise/README.md`](./Bitwise/README.md) and [`Bitwise/code.cpp`](./Bitwise/code.cpp).
+
+### 11.1 What are bitwise operators?
+
+In computer memory, integers are stored in binary (series of `0`s and `1`s).
+While arithmetic operators (`+`, `-`, `*`) work on the whole number at once, **bitwise operators operate on individual bits**.
+
+Because the CPU executes bit operations directly in hardware circuits, bit manipulation is **extremely fast ($O(1)$)** and takes zero extra memory.
+
+---
+
+### 11.2 The 6 Bitwise Operators
+
+| Operator | Name | Rule | Example (`a = 5`, `b = 6`) | Result |
+|:---:|:---:|:---|:---|:---:|
+| `&` | **AND** | `1` only if **both** bits are `1` | `5 & 6` (`0101 & 0110`) | `4` (`0100`) |
+| `\|` | **OR** | `1` if **at least one** bit is `1` | `5 \| 6` (`0101 \| 0110`) | `7` (`0111`) |
+| `^` | **XOR** | `1` if bits are **different**; `0` if same | `5 ^ 6` (`0101 ^ 0110`) | `3` (`0011`) |
+| `~` | **NOT** | **Flips** every bit (`0` $\to$ `1`, `1` $\to$ `0`) | `~5` (Formula: `-(5 + 1)`) | `-6` |
+| `<<` | **Left Shift** | Shifts bits left, fills right with `0` | `5 << 1` ($5 \times 2^1$) | `10` |
+| `>>` | **Right Shift** | Shifts bits right, drops rightmost bits | `5 >> 1` ($\lfloor 5 / 2^1 \rfloor$) | `2` |
+
+---
+
+### 11.3 1's Complement & 2's Complement
+
+#### What is 1's Complement?
+Simply flip every bit in the binary representation:
+- `0` becomes `1`
+- `1` becomes `0`
+
+#### What is 2's Complement?
+Modern computers store signed negative numbers using **2's complement**:
+$$\text{2's Complement} = (\text{1's Complement}) + 1$$
+
+#### Why does `~5` equal `-6` in C++?
+1. `5` in 32-bit binary has leading `0`s: `0000...00000101`.
+2. Bitwise NOT (`~5`) flips every bit: `1111...11111010`.
+3. The leading bit is `1` (which means it represents a **negative number** in 2's complement).
+4. Converting `1111...11111010` back to magnitude: flip bits back (`0000...00000101` = 5), add 1 (`5 + 1 = 6`), and add a minus sign $\to$ **`-6`**.
+
+> 💡 **Golden Formula:** `~x = -(x + 1)`
+
+---
+
+### 11.4 Bitwise Shift Operators
+
+#### Left Shift (`<<`)
+Shifting bits left by `k` positions is equivalent to multiplying by $2^k$:
+$$a \ll k = a \times 2^k$$
+- `5 << 1` = $5 \times 2 = 10$
+- `5 << 2` = $5 \times 4 = 20$
+- `1 << n` = $2^n$ *(Common trick to generate powers of 2!)*
+
+#### Right Shift (`>>`)
+Shifting bits right by `k` positions is equivalent to dividing by $2^k$:
+$$a \gg k = \lfloor \frac{a}{2^k} \rfloor$$
+- `20 >> 1` = $20 / 2 = 10$
+- `20 >> 2` = $20 / 4 = 5$
+
+---
+
+### 11.5 Must-Know Bit Manipulation Shortcuts (For DSA)
+
+| Goal | Trick / Code | Why it works |
+|:---|:---|:---|
+| **Check Odd / Even** | `(n & 1) != 0` | In binary, odd numbers end in `1`, even numbers end in `0`. |
+| **Check $i$-th bit** | `(n & (1 << i)) != 0` | `1 << i` isolates the $i$-th bit. |
+| **Set $i$-th bit to 1** | `n = n \| (1 << i)` | OR with 1 turns that bit ON. |
+| **Clear $i$-th bit to 0** | `n = n & ~(1 << i)` | AND with 0 turns that bit OFF. |
+| **Toggle $i$-th bit** | `n = n ^ (1 << i)` | XOR with 1 flips the bit. |
+| **Check if Power of 2** | `(n > 0) && ((n & (n - 1)) == 0)` | Powers of 2 have only one `1` bit (e.g. $8 = 1000_2, 7 = 0111_2$). |
+| **Clear lowest set bit** | `n = n & (n - 1)` | Flips the rightmost `1` to `0`. |
+| **Swap `a` and `b` without temp** | `a ^= b; b ^= a; a ^= b;` | Uses XOR cancellation ($x \oplus x = 0$). |
+| **Count set bits** | `__builtin_popcount(n)` | Built-in GCC compiler intrinsic. |
+
+> ⚠️ **Operator Precedence Caution:** Comparison operators (`==`, `!=`) have higher precedence than bitwise operators (`&`, `|`, `^`). Always use parentheses: `if ((n & 1) == 0)` instead of `if (n & 1 == 0)`.
+
+---
+
+> 🚀 **Explore the Full Module:**
+> Read the complete interactive notes and examples in [**`Bitwise/README.md`**](./Bitwise/README.md) and run the demo code in [**`Bitwise/code.cpp`**](./Bitwise/code.cpp)!
+
